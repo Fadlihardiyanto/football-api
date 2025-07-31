@@ -37,7 +37,6 @@ node_modules/
 
 # Docker related
 .env
-docker-compose.override.yml
 docker-compose.dev.yml
 .docker/
 

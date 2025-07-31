@@ -1,0 +1,41 @@
+# docker-compose.override.yml
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: air -c .air.toml
+    volumes:
+      - .:/app
+      - /app/tmp
+      - go-cache:/tmp/go-cache  # Add build cache volume
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      - CGO_ENABLED=1
+      - GOOS=linux
+      - GOARCH=amd64
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: air -c .air.worker.toml
+    volumes:
+      - .:/app
+      - /app/tmp  # Exclude tmp directory
+    environment:
+      - CGO_ENABLED=1  # Enable CGO untuk kafka
+      - GOOS=linux
+      - GOARCH=amd64
+
+volumes:
+  go-cache:
