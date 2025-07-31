@@ -28,6 +28,7 @@ type BootstrapConfig struct {
 	Producer    *kafka.Producer
 	RedisClient *redis.Client
 	JWTConfig   *model.JWTConfig
+	RateLimiter gin.HandlerFunc
 }
 
 func Bootstrap(config *BootstrapConfig) {
@@ -57,15 +58,17 @@ func Bootstrap(config *BootstrapConfig) {
 
 	// Set up middlewares
 	authMiddleware := middleware.AuthMiddleware(authUseCase)
+	rateLimiterMiddleware := middleware.NewRateLimiterMiddleware(config.Viper)
 
 	routeConfig := route.RouteConfig{
-		App:               config.App,
-		AuthController:    authController,
-		TeamsController:   teamsController,
-		PlayerController:  playersController,
-		MatchesController: matchesController,
-		GoalsController:   goalsController,
-		AuthMiddleware:    authMiddleware,
+		App:                   config.App,
+		AuthController:        authController,
+		TeamsController:       teamsController,
+		PlayerController:      playersController,
+		MatchesController:     matchesController,
+		GoalsController:       goalsController,
+		AuthMiddleware:        authMiddleware,
+		RateLimiterMiddleware: rateLimiterMiddleware,
 	}
 	routeConfig.Setup()
 

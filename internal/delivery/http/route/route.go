@@ -9,16 +9,19 @@ import (
 
 // RouteConfig holds Gin engine and controllers
 type RouteConfig struct {
-	App               *gin.Engine
-	AuthController    *httpdelivery.AuthController
-	TeamsController   *httpdelivery.TeamsController
-	PlayerController  *httpdelivery.PlayersController
-	MatchesController *httpdelivery.MatchesController
-	GoalsController   *httpdelivery.GoalsController
-	AuthMiddleware    gin.HandlerFunc
+	App                   *gin.Engine
+	AuthController        *httpdelivery.AuthController
+	TeamsController       *httpdelivery.TeamsController
+	PlayerController      *httpdelivery.PlayersController
+	MatchesController     *httpdelivery.MatchesController
+	GoalsController       *httpdelivery.GoalsController
+	AuthMiddleware        gin.HandlerFunc
+	RateLimiterMiddleware gin.HandlerFunc
 }
 
 func (c *RouteConfig) Setup() {
+	c.App.Use(c.RateLimiterMiddleware)
+
 	api := c.App.Group("/api/v1")
 
 	// public routes
