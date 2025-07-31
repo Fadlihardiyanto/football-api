@@ -1,0 +1,33 @@
+# Dockerfile.dev
+FROM golang:1.23-bullseye
+
+# Install runtime deps and migrate CLI
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && curl -L https://github.com/golang-migrate/migrate/releases/download/v4.17.1/migrate.linux-amd64.tar.gz \
+    | tar xvz && mv migrate /usr/local/bin/migrate && chmod +x /usr/local/bin/migrate
+
+# Install Air for live-reload
+RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b /usr/local/bin
+
+# Enable CGO for Kafka and Redis compatibility
+ENV CGO_ENABLED=1
+
+# Set working directory
+WORKDIR /app
+
+# Copy and install Go dependencies with caching
+COPY go.mod go.sum ./
+RUN go mod download
+RUN go mod verify
+
+# Copy project files
+COPY . .
+
+# Ensure tmp dir exists
+RUN mkdir -p tmp
+
+# Default command
+CMD ["air"]

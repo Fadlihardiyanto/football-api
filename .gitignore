@@ -1,0 +1,51 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output of the go coverage tool
+*.cover
+
+# Vendor directory (if you use go mod vendor)
+vendor/
+
+# Go workspace file (Go 1.18+)
+go.work
+go.work.sum
+
+# Go module cache
+go.sum
+
+# GoLand / JetBrains IDE
+.idea/
+
+# VSCode settings
+.vscode/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dependency directories (replace if needed)
+node_modules/
+
+# Docker related
+.env
+docker-compose.override.yml
+docker-compose.dev.yml
+.docker/
+
+# Build artifacts
+bin/
+build/
+dist/
+
+# Temporary files
+*.swp
+*.tmp

@@ -1,0 +1,10 @@
+.git
+uploads/*
+bin/
+*.log
+*.tmp
+*.test
+tmp/
+.env
+.env.local
+node_modules/

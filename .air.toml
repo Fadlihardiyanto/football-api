@@ -1,0 +1,29 @@
+# .air.toml
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "CGO_ENABLED=1 GOCACHE=/tmp/go-cache go build -o ./tmp/main-web ./cmd/web"
+  bin = "tmp/main-web"
+  include_ext = ["go", "tpl", "tmpl", "html"]
+  include_dir = ["cmd", "internal"]
+  exclude_dir = ["tmp", "vendor", "bin", ".git"]
+  delay = 100  # Reduce dari 1000ms ke 100ms
+  kill_delay = "500ms"  # Faster kill
+  send_interrupt = false
+  stop_on_root = false
+  poll = true              # Enable polling mode
+  poll_interval = 500      # Poll every 500ms
+
+[color]
+  app = ""
+  build = "yellow"
+  main = "magenta"
+  runner = "green"
+  watcher = "cyan"
+
+[log]
+  time = true
+
+[misc]
+  clean_on_exit = false
