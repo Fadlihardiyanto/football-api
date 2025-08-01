@@ -26,7 +26,6 @@ RUN go mod verify
 # Copy project files
 COPY . .
 
-# Ensure tmp dir exists
 RUN mkdir -p tmp
 
 # Default command

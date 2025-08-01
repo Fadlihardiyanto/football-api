@@ -48,7 +48,7 @@ COPY --from=builder /app/bin/worker /worker
 # Ensure executables
 RUN chmod +x /web /worker
 
-# Copy optional resource dirs if needed
+# Copy 
 COPY --from=builder /app/uploads /app/uploads
 
 # Set default CMD (can be overridden in docker-compose)
